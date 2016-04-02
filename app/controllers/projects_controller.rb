@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    
+
   end
 
   # Reading
