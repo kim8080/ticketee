@@ -1,20 +1,11 @@
 class ProjectsController < ApplicationController
+  before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :authorize_admin!, except: [:index, :show]
-  before_action :set_project, only: [
-                                :show,
-                                :edit,
-                                :update,
-                                :destroy
-                            ]
-  # Creation
+
   def index
     @projects = Project.all
   end
 
-  def show
-  end
-
-  # Reading
   def new
     @project = Project.new
   end
@@ -23,7 +14,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
-      flash[:notice] = "Project has been created."
+      flash[:notice] = "Project has been sucessfully created."
       redirect_to @project
     else
       flash[:alert] = "Project has not been created."
@@ -31,7 +22,9 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # Updating
+  def show
+  end
+
   def edit
   end
 
@@ -41,26 +34,29 @@ class ProjectsController < ApplicationController
       redirect_to @project
     else
       flash[:alert] = "Project has not been updated."
-      render "edit"
+      render 'edit'
     end
   end
 
-  # Deleting
   def destroy
+    @project = Project.find(params[:id])
     @project.destroy
+
     flash[:notice] = "Project has been destroyed."
+
     redirect_to projects_path
   end
 
   private
-    def project_params
-      params.require(:project).permit(:name, :description)
-    end
 
-    def set_project
-      @project = Project.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The project you were looking for cannot be found."
-      redirect_to projects_path
-    end
+  def project_params
+    params.require(:project).permit(:name, :description)
+  end
+
+  def set_project
+    @project = Project.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "The project you were looking for cannot be found."
+    redirect_to projects_path
+  end
 end

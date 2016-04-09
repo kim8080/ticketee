@@ -12,10 +12,11 @@ require 'spec_helper'
       fill_in 'Description', with: 'A text-editor for Windows'
       click_button 'Create Project'
 
-      expect(page).to have_content("Project has been created.")
+      expect(page).to have_content("Project has been sucessfully created.")
 
       project = Project.where(name: "TextMate 2").first
       expect(page.current_url).to eql(project_url(project))
+
       title = "TextMate 2 - Projects - Ticketee"
       expect(page).to have_title(title)
     end
